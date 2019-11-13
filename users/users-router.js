@@ -6,9 +6,23 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 
 router.get("/", (req, res) => {
-  db.findAnswers()
-    .then(answer => {
-      res.status(200).json(answer);
+  db.findUsers()
+    .then(account => {
+      let newArr = [];
+
+      // Takes off the password from the response for security purposes
+      // In Twitter, for example, you can search for public user info. Same here.
+      account.forEach(acc =>
+        newArr.push({
+          id: acc.id,
+          username: acc.username,
+          name: acc.name,
+          bio: acc.bio,
+          avatar: acc.avatar,
+          owner: acc.owner,
+        })
+      );
+      res.status(200).json(newArr);
     })
     .catch(error => {
       res
@@ -18,21 +32,23 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  db.findAnswerById(req.params.id)
-    .then(answer => {
-      res.status(200).json(answer);
-    })
-    .catch(error => {
-      res
-        .status(500)
-        .json({ error: "The project information could not be retrieved." });
-    });
-});
+  db.findUserById(req.params.id)
+    .then(account => {
+      let newArr = [];
 
-router.post("/", (req, res) => {
-  db.addAnswer(req.body)
-    .then(answer => {
-      res.status(201).json(answer);
+      // Takes off the password from the response for security purposes
+      // In Twitter, for example, you can search for public user info. Same here.
+      account.forEach(acc =>
+        newArr.push({
+          id: acc.id,
+          username: acc.username,
+          name: acc.name,
+          bio: acc.bio,
+          avatar: acc.avatar,
+          owner: acc.owner,
+        })
+      );
+      res.status(200).json(newArr);
     })
     .catch(error => {
       res
@@ -42,9 +58,9 @@ router.post("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
-  db.updateAnswer(req.params.id, req.body)
-    .then(answer => {
-      res.status(201).json(answer);
+  db.updateUser(req.params.id, req.body)
+    .then(ent => {
+      res.status(200).json(ent);
     })
     .catch(error => {
       res
@@ -54,9 +70,9 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  db.deleteAnswer(req.params.id)
-    .then(answer => {
-      res.status(200).json(answer);
+  db.deleteUser(req.params.id)
+    .then(ent => {
+      res.status(200).json(ent);
     })
     .catch(error => {
       res
@@ -64,6 +80,7 @@ router.delete("/:id", (req, res) => {
         .json({ error: "The project information could not be retrieved." });
     });
 });
+
 function generateToken(user) {
   const payload = {
     username: user.username,
@@ -73,7 +90,7 @@ function generateToken(user) {
   };
   const secret = "idsfwgier37yehiwfe7rgfsdf73wupp999(^%$";
   const options = {
-    expiresIn: "8h"
+    expiresIn: "5h"
   };
   return jwt.sign(payload, secret, options);
 }
