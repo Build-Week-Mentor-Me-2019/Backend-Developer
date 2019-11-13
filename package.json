@@ -7,8 +7,8 @@
     "node": "12.1.0"
   },
   "scripts": {
-    "server": "nodemon index.js",
-    "start": "nodemon index.js",
+    "server": "node index.js",
+    "start": "node index.js",
     "test": "jest --watch"
   },
   "jest": {
