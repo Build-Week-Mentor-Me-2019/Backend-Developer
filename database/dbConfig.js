@@ -3,15 +3,12 @@ const configOptions = require("../knexfile").development;
 const db = knex(configOptions);
 
 module.exports = {
-  findEntrepreneurs,
-  findOwners,
   findQuestions,
   findAnswers,
+  findAnswerById,
   findQuestionsById,
   findAnswersOnQuestions,
   findId,
-  registerEntrepreneur,
-  registerOwner,
   login,
   update,
   removeEnt,
@@ -20,16 +17,16 @@ module.exports = {
   removeOwn,
   removeQuestion,
   updateQuestion,
-  addQuestion
+  addQuestion,
+  addAnswer,
+  updateAnswer,
+  deleteAnswer,
+  findUsers,
+  findUserById,
+  addUser,
+  updateUser,
+  deleteUser,
 };
-
-function findEntrepreneurs() {
-  return db("entrepreneurs");
-}
-
-function findOwners() {
-  return db("business_owners");
-}
 
 function findQuestions() {
   return db("questions");
@@ -39,8 +36,14 @@ function findAnswers() {
   return db("answers");
 }
 
+function findAnswerById(id) {
+  return db("answers")
+    .where({ id })
+    .first();
+}
+
 function matchEnt(str) {
-  return db("entrepreneurs").where({ username: str });
+  return db("users").where({ username: str });
 }
 
 function matchOwn(str) {
@@ -128,4 +131,45 @@ function updateQuestion(id, question) {
 
 function addQuestion(question) {
   return db("questions").insert(question)
+}
+
+function addAnswer(answer) {
+  return db("answers").insert(answer)
+}
+
+function updateAnswer(id, answer) {
+  return db("answers")
+  .where({ id })
+  .update(answer)
+}
+
+function deleteAnswer(id) {
+  return db("answers")
+  .where({ id })
+  .del();
+}
+
+function findUsers() {
+  return db("users")
+}
+
+function findUserById(id) {
+  return db("users")
+  .where({ id });
+}
+
+function addUser(resource) {
+  return db("users").insert(resource);
+}
+
+function updateUser(id, resource) {
+  return db("users")
+  .where({ id })
+  .update(resource);
+}
+
+function deleteUser(id) {
+  return db("users")
+  .where({ id })
+  .del()
 }

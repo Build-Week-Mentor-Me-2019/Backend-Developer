@@ -3,7 +3,7 @@ const db = require("../database/dbConfig");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-router.post("/register/owner", (req, res) => {
+router.post("/register/user", (req, res) => {
   if (!req.body.name || !req.body.password) {
     res.status(400).json({
       errorMessage: "Please provide username, name and password for the user."
@@ -11,7 +11,7 @@ router.post("/register/owner", (req, res) => {
   } else {
     req.body.password = bcrypt.hashSync(req.body.password, 12);
 
-    db.registerOwner(req.body)
+    db.addUser(req.body)
       .then(account => {
         res.status(201).json(account);
       })
@@ -23,27 +23,6 @@ router.post("/register/owner", (req, res) => {
   }
 });
 
-router.post("/register/entrepreneur", (req, res) => {
-  if (!req.body.username || !req.body.name || !req.body.password) {
-    res.status(400).json({
-      errorMessage:
-        "Please provide username, name and password for the entrepreneur."
-    });
-  } else {
-    req.body.password = bcrypt.hashSync(req.body.password, 12);
-
-    db.registerEntrepreneur(req.body)
-      .then(account => {
-        res.status(201).json(account);
-      })
-      .catch(error => {
-        res.status(500).json({
-          error:
-            "There was an error while saving the entrepreneur to the database"
-        });
-      });
-  }
-});
 
 router.post("/login", (req, res) => {
   if (!req.body.username || !req.body.password) {

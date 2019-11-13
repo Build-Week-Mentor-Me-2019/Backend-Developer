@@ -1,37 +1,23 @@
 exports.up = function(knex) {
   return knex.schema
-    .createTable("entrepreneurs", ent => {
-      ent.string("username", 128).primary();
-      ent.string("name", 128).notNullable();
-      ent
+    .createTable("users", user => {
+      user.increments();
+      user.string("username", 128).notNullable();
+      user.string("name", 128).notNullable();
+      user
         .text("bio", 238)
         .notNullable()
         .defaultTo("[Empty bio]");
-      ent
+      user
         .string("avatar")
         .notNullable()
         .defaultTo(
           "https://www.nhlbi.nih.gov/sites/default/files/styles/square_crop/public/2017-12/genericavatar_64.png?itok=B07OtsV0"
         );
-      ent
-        .string("password", 18)
+      user
+        .boolean("owner")
         .notNullable()
-        .defaultTo("");
-    })
-    .createTable("business_owners", bus => {
-      bus.string("username", 128).primary();
-      bus.string("name").notNullable();
-      bus
-        .text("bio", 238)
-        .notNullable()
-        .defaultTo("[Empty bio]");
-      bus
-        .string("avatar")
-        .notNullable()
-        .defaultTo(
-          "https://www.nhlbi.nih.gov/sites/default/files/styles/square_crop/public/2017-12/genericavatar_64.png?itok=B07OtsV0"
-        );
-      bus
+      user
         .string("password", 18)
         .notNullable()
         .defaultTo("");
@@ -80,6 +66,5 @@ exports.down = function(knex, Promise) {
   return knex.schema
     .dropTableIfExists("answers")
     .dropTableIfExists("questions")
-    .dropTableIfExists("business_owners")
-    .dropTableIfExists("entrepreneurs");
+    .dropTableIfExists("users");
 };
