@@ -8,7 +8,7 @@
   },
   "scripts": {
     "server": "nodemon index.js",
-    "start": "node index.js",
+    "start": "nodemon index.js",
     "test": "jest --watch"
   },
   "jest": {
@@ -41,6 +41,6 @@
     "supertest": "^4.0.2"
   },
   "devDependencies": {
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.4"
   }
 }
