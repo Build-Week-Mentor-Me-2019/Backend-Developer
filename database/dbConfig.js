@@ -19,7 +19,8 @@ module.exports = {
   matchOwn,
   removeOwn,
   removeQuestion,
-  updateQuestion
+  updateQuestion,
+  addQuestion
 };
 
 function findEntrepreneurs() {
@@ -123,4 +124,8 @@ function updateQuestion(id, question) {
   return db("questions")
     .where("id", Number(id))
     .update(question);
+}
+
+function addQuestion(question) {
+  return db("questions").insert(question)
 }

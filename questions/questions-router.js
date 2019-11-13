@@ -53,6 +53,18 @@ router.get("/:id/answers", (req, res) => {
     });
 });
 
+router.post("/", (req, res) => {
+  db.addQuestion(req.body)
+    .then(question => {
+      res.status(201).json(question);
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ error: "The questions information could not be created." });
+    });
+});
+
 router.put("/:id", (req, res) => {
   db.updateQuestion(req.params.id, req.body)
     .then(question => {
